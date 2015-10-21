@@ -1,3 +1,4 @@
+/*http://cs.stackexchange.com/questions/10538/bit-what-is-the-intuition-behind-a-binary-indexed-tree-and-how-was-it-thought-a*/
 #include <bits/stdc++.h>
 using namespace std;
 
