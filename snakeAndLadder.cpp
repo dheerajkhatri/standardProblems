@@ -19,14 +19,10 @@ we get evaluate the player position by checking the position the player has roll
 i.e. say i am at 10 and by throw of dice returns 3 so I will check board[13] and the value will be final position.*/
 
 #include <bits/stdc++.h>
-#include <cstdio>
-#include <iostream>
 using namespace std;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef pair<int,int> ii;
-
-vector<int>board;
 
 void print(vi &v){
 	for(auto it:v)
@@ -42,69 +38,67 @@ void print(vvi &vv){
 	}
 }
 
-void init(){
-	board.resize(101);
-	for(int i=1;i<=100;i++)board[i] = i;
-	int snakes,ladders,from,to;
-	cout<<"Enter #snakes and #snakes pair \n";
-	cin>>snakes;
-	for(int i=1;i<=snakes;i++){
-		cin>>from>>to;
-		board[from] = to;
+class game{
+private:
+	vector<int>board;
+public:	
+	void init(){
+		board.resize(101);
+		for(int i=1;i<=100;i++)board[i] = i;
+		int snakes,ladders,from,to;
+		cout<<"Enter #snakes and #snakes pair \n";
+		cin>>snakes;
+		for(int i=1;i<=snakes;i++){
+			cin>>from>>to;
+			board[from] = to;
+		}
+		cout<<"Enter #ladders and #ladders pair \n";
+		cin>>ladders;
+		for(int i=1;i<=ladders;i++){
+			cin>>from>>to;
+			board[from] = to;
+		}
+		return;
 	}
-	cout<<"Enter #ladders and #ladders pair \n";
-	cin>>ladders;
-	for(int i=1;i<=ladders;i++){
-		cin>>from>>to;
-		board[from] = to;
+
+	int rollDie(){
+		srand (time(NULL));
+		int roll = (rand()%6)+1;
+		cout<<"Die:"<<roll<<endl;	
+		return roll;
 	}
-	return;
-}
 
-int rollDie(){
-	srand (time(NULL));
-	return (rand()%6)+1;
-}
-
-
-
+	void updatePos(int& oldpos, int roll){
+		cout<<"old Position:"<<oldpos<<endl;		
+		if(oldpos+roll<=100){
+			oldpos += roll;
+			oldpos = board[oldpos];	
+		}		
+		cout<<"new Position:"<<oldpos<<endl;		
+	}
+};
 
 int main() {
 	int pos1=1,pos2=1,roll;
 	int iter = 0;
-	init();
+	game G;
+	G.init();
 	while(true){
 		iter++;
-		cout<<"player1 chance,press enter to roll die"<<endl;
-		/*fflush(stdin);
-		getch();*/
-		roll = rollDie();
-		cout<<"Die:"<<roll<<endl;
 
-		cout<<"old Position:"<<pos1<<endl;		
-		if(pos1+roll<=100){
-			pos1 += roll;
-			pos1 = board[pos1];	
-		}		
-		cout<<"Position:"<<pos1<<endl;
+		cout<<"player1 chance,press enter to roll die"<<endl;/*fflush(stdin);getch();*/				
+		roll = G.rollDie();
+		G.updatePos(pos1,roll);		
 		if(pos1==100){
 			cout<<"Player 1 won the game"<<endl;
 			break;			
 		}		
 
 
-		cout<<"player2 chance,press enter to roll die"<<endl;
-		/*fflush(stdin);
-		getch();*/
-		roll = rollDie();
-		cout<<"Die:"<<roll<<endl;
-		cout<<"old Position:"<<pos2<<endl;		
-		if(pos2+roll<=100){
-			pos2 += roll;
-			pos2 = board[pos2];
-		}		
-		cout<<"Position:"<<pos2<<endl;
-		if(pos1==100){
+		cout<<"player2 chance,press enter to roll die"<<endl; /*fflush(stdin);getch();*/		
+		roll = G.rollDie();
+		G.updatePos(pos2,roll);
+		if(pos2==100){
 			cout<<"Player 2 won the game"<<endl;
 			break;
 		}
