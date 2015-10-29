@@ -10,7 +10,7 @@ void updateUtil(int ss, int se, int i, int diff, int si){
 	
 	if(ss!=se){
 		int mid = ss+(se-ss)/2;
-		updateUtil(se,mid,i,diff,2*si+1);
+		updateUtil(ss,mid,i,diff,2*si+1);
 		updateUtil(mid+1,se,i,diff,2*si+2);
 	}
 }
