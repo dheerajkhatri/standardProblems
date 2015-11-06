@@ -142,6 +142,30 @@ bool pathSum(Node* root, int cursum, int sum){
 	return leftans||rightans;
 }
 
+int maxSumPath(Node* root){
+	static int maxsum = INT_MIN;
+	if(!root)return maxsum;
+	vector<pair<Node*,int>>cur,next;
+	cur.push_back(make_pair(root,root->data));
+	while(!cur.empty()){
+		for(auto it=cur.begin();it!=cur.end();it++){
+			if(it->first->left==NULL && it->first->right==NULL){
+				maxsum = max(maxsum,it->second);
+			}
+			if(it->first->left!=NULL){
+				next.push_back(make_pair(it->first->left,it->second + (it->first->left)->data));
+			}
+			if(it->first->right!=NULL){
+				next.push_back(make_pair(it->first->right,it->second + (it->first->right)->data));
+			}
+		}
+		cur.clear();
+		cur.swap(next);
+	}
+	return maxsum;
+}
+
+
 void inorderStack(Node* root){
 	stack<Node*>s;
 	if(!root)return;	
@@ -182,7 +206,7 @@ int main() {
 	std::ios::sync_with_stdio(false);
 	Node* root = createTree();
 
-	int height = getheight(root);
+	/*int height = getheight(root);
 	cout<<height<<endl;
 
 	cout<<"Print all root to leaf paths"<<endl;
@@ -220,6 +244,8 @@ int main() {
 	vector<int>preorder = {1,2,4,5,3,6};
 	int prepos = 0;
 	Node* root2 = buildTreeByInPre(inorder,0,5,preorder,prepos);
-	inorderStack(root2);
+	inorderStack(root2);*/
+
+	cout<<maxSumPath(root)<<endl;
 	return 0;
 }
